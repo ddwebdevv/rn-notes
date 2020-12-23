@@ -2,24 +2,39 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
 import { Context as NotesContext } from '../context/NotesContext';
 // import { Context as ImageContext } from '../context/ImageContext';
+import { Ionicons } from '@expo/vector-icons';
 
 const HomeScreen = () => {
     const { state, addNotePost} = useContext(NotesContext);
     return(
         <View>
-            <Text>Home Screen</Text>
             <Button title='Add Note' onPress={addNotePost}/>
             <FlatList
                 data={state}
                 keyExtractor={(note) => note.title}
                 renderItem={({ item }) => {
-                    return <Text>{item.title}</Text>
+                    return <View style={styles.row}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Ionicons name="ios-trash" size={30} color="black" />
+                    </View>
                 }}
             />
         </View>
     );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 15,
+        borderBottomWidth: 1,
+        borderColor: 'grey',
+        paddingHorizontal: 15
+    },
+    title: {
+        fontSize: 18
+    }
+});
 
 export default HomeScreen;
