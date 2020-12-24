@@ -2,8 +2,16 @@ import createDataContext from './createDataContext';
 
 const noteReducer = (state, action) => {
     switch (action.type) {
+        case 'delete_note':
+            return state.filter((notePost) => notePost.id !== action.payload);
         case 'add_note':
-            return [...state, { title: `Note #${state.length + 1}`}];
+            return [
+                ...state,
+                {
+                     title: `Note #${state.length + 1}`,
+                     id: Math.floor(Math.random()*99999)
+                }
+            ];
         default:
             return state;
     }
@@ -15,9 +23,15 @@ const addNotePost = (dispatch) => {
     };
 };
 
+const deleteNotePost = (dispatch) => {
+    return (id) => {
+        dispatch({ type: 'delete_note', payload: id });
+    };
+};
+
 export const { Context, Provider } = createDataContext(
     noteReducer,
-    { addNotePost },
+    { addNotePost, deleteNotePost },
     []
 );
 

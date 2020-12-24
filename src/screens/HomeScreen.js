@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { Context as NotesContext } from '../context/NotesContext';
 // import { Context as ImageContext } from '../context/ImageContext';
 import { Ionicons } from '@expo/vector-icons';
 
 const HomeScreen = () => {
-    const { state, addNotePost} = useContext(NotesContext);
+    const { state, addNotePost, deleteNotePost} = useContext(NotesContext);
     return(
         <View>
             <Button title='Add Note' onPress={addNotePost}/>
@@ -14,8 +14,12 @@ const HomeScreen = () => {
                 keyExtractor={(note) => note.title}
                 renderItem={({ item }) => {
                     return <View style={styles.row}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Ionicons name="ios-trash" size={30} color="black" />
+                        <Text style={styles.title}>
+                            {item.title} - {item.id}
+                        </Text>
+                        <TouchableOpacity onPress={() => deleteNotePost(item.id)}>
+                            <Ionicons name="ios-trash" size={30} color="black" />
+                        </TouchableOpacity>
                     </View>
                 }}
             />
