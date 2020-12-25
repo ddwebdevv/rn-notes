@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
                                     {item.title} - {item.id}
                                 </Text>
                                 <TouchableOpacity onPress={() => deleteNotePost(item.id)}>
-                                    <Ionicons name="ios-trash" size={30} color="#444" style={{ marginRight: 10 }}/>
+                                    <Ionicons name="ios-trash" size={33} color="#555" style={{ marginRight: 10 }}/>
                                 </TouchableOpacity>
                             </View>
                         </TouchableOpacity>

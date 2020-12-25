@@ -13,6 +13,12 @@ const noteReducer = (state, action) => {
                      id: Math.floor(Math.random()*999999)
                 }
             ];
+        case 'edit_note':
+            return state.map((note) => {
+                return note.id === action.payload.id 
+                    ? action.payload
+                    : note;
+            });
         default:
             return state;
     }
@@ -20,8 +26,25 @@ const noteReducer = (state, action) => {
 
 const addNotePost = (dispatch) => {
     return (title, content, callback) => {
-        dispatch({ type: 'add_note', payload: { title, content } });
-        callback();
+        dispatch({ 
+            type: 'add_note', 
+            payload: { title, content } 
+        });
+        if(callback){
+            callback();
+        }
+    };
+};
+
+const editNotePost = dispatch => {
+    return (title, content, id, callback) => {
+        dispatch({
+            type: 'edit_note',
+            payload: { id, title, content }
+        });
+        if(callback){
+            callback();
+        }
     };
 };
 
@@ -33,8 +56,8 @@ const deleteNotePost = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
     noteReducer,
-    { addNotePost, deleteNotePost },
-    []
+    { addNotePost, deleteNotePost, editNotePost },
+    [{ title: 'test', content: 'test content', id: 1}]
 );
 
 // for API requests

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context } from '../context/NotesContext';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 const ShowScreen = ({ navigation }) => {
     // navigation.getParam('id');
@@ -10,18 +11,27 @@ const ShowScreen = ({ navigation }) => {
     return(
         <View>
             <Text>{notePost.title}</Text>
+            <Text>{notePost.content}</Text>
         </View>
     );
 };
 
-const styles = StyleSheet.create({});
+ShowScreen.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: () => (
+          <TouchableOpacity 
+            onPress={() => 
+                navigation.navigate('Edit', { id: navigation.getParam('id')})
+            }>
+            <MaterialCommunityIcons name="lead-pencil" size={33} color="#555" style={{ marginRight: 20 }}/>
+          </TouchableOpacity>
+        ),
+    };
+}
+
+const styles = StyleSheet.create({
+
+});
 
 export default ShowScreen;
 
-// return {
-//     headerRight: () => (
-//       <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
-//         <EvilIcons name="pencil" size={35} />
-//       </TouchableOpacity>
-//     ),
-//   };
