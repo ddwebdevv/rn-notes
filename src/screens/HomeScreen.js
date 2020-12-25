@@ -4,7 +4,7 @@ import { Context as NotesContext } from '../context/NotesContext';
 // import { Context as ImageContext } from '../context/ImageContext';
 import { Ionicons } from '@expo/vector-icons';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const { state, addNotePost, deleteNotePost} = useContext(NotesContext);
     return(
         <View>
@@ -13,14 +13,18 @@ const HomeScreen = () => {
                 data={state}
                 keyExtractor={(note) => note.title}
                 renderItem={({ item }) => {
-                    return <View style={styles.row}>
-                        <Text style={styles.title}>
-                            {item.title} - {item.id}
-                        </Text>
-                        <TouchableOpacity onPress={() => deleteNotePost(item.id)}>
-                            <Ionicons name="ios-trash" size={30} color="black" />
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate('Show', { id: item.id })}>
+                            <View style={styles.row}>
+                                <Text style={styles.title}>
+                                    {item.title} - {item.id}
+                                </Text>
+                                <TouchableOpacity onPress={() => deleteNotePost(item.id)}>
+                                    <Ionicons name="ios-trash" size={30} color="black" />
+                                </TouchableOpacity>
+                            </View>
                         </TouchableOpacity>
-                    </View>
+                    );
                 }}
             />
         </View>
