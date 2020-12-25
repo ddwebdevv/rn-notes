@@ -8,8 +8,9 @@ const noteReducer = (state, action) => {
             return [
                 ...state,
                 {
-                     title: `Note #${state.length + 1}`,
-                     id: Math.floor(Math.random()*99999)
+                     title: action.payload.title,
+                     content: action.payload.content,
+                     id: Math.floor(Math.random()*999999)
                 }
             ];
         default:
@@ -18,8 +19,9 @@ const noteReducer = (state, action) => {
 };
 
 const addNotePost = (dispatch) => {
-    return () => {
-        dispatch({ type: 'add_note' });
+    return (title, content, callback) => {
+        dispatch({ type: 'add_note', payload: { title, content } });
+        callback();
     };
 };
 
@@ -34,6 +36,19 @@ export const { Context, Provider } = createDataContext(
     { addNotePost, deleteNotePost },
     []
 );
+
+// for API requests
+// const addNotePost = (dispatch) => {
+//     return  async (title, content, callback) => {
+//         try {
+//             await axios.post('postsometing', title, content);
+//             dispatch({ type: 'add_note', payload: { title, content } });
+//             callback();
+//         } catch (e) {
+
+//         }
+//     };
+// };
 
 
 //befor using createDataProvider

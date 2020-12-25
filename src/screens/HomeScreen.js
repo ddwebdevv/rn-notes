@@ -4,14 +4,14 @@ import { Context as NotesContext } from '../context/NotesContext';
 // import { Context as ImageContext } from '../context/ImageContext';
 import { Ionicons } from '@expo/vector-icons';
 
+
 const HomeScreen = ({ navigation }) => {
-    const { state, addNotePost, deleteNotePost} = useContext(NotesContext);
+    const { state, deleteNotePost} = useContext(NotesContext);
     return(
         <View>
-            <Button title='Add Note' onPress={addNotePost}/>
             <FlatList
                 data={state}
-                keyExtractor={(note) => note.title}
+                keyExtractor={(note) => note.id.toString()}
                 renderItem={({ item }) => {
                     return (
                         <TouchableOpacity onPress={() => navigation.navigate('Show', { id: item.id })}>
@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
                                     {item.title} - {item.id}
                                 </Text>
                                 <TouchableOpacity onPress={() => deleteNotePost(item.id)}>
-                                    <Ionicons name="ios-trash" size={30} color="black" />
+                                    <Ionicons name="ios-trash" size={30} color="#444" style={{ marginRight: 10 }}/>
                                 </TouchableOpacity>
                             </View>
                         </TouchableOpacity>
@@ -29,6 +29,16 @@ const HomeScreen = ({ navigation }) => {
             />
         </View>
     );
+};
+
+HomeScreen.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: () => (
+          <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+            <Ionicons name="ios-add-circle-outline" size={35} color="#555" style={{ marginRight: 20 }}/>
+          </TouchableOpacity>
+        ),
+      };
 };
 
 const styles = StyleSheet.create({
@@ -46,3 +56,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
