@@ -13,7 +13,8 @@ const EditScreen = ({ navigation }) => {
             initTitle: notePost.title,
             initContent: notePost.content,
             labelTitle: 'Edit Title:',
-            labelContent: 'Edit Content:'
+            labelContent: 'Edit Content:',
+            buttonTitle: 'Edit Note'
         }}
         onSubmit = {(title, content) => {
             editNotePost(title, content, id, () => navigation.pop());

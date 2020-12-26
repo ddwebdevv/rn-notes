@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 
 const NoteForm = ({ onSubmit, initValues }) => {
-    const { initTitle, initContent, labelTitle, labelContent } = initValues;
+    const { initTitle, initContent, labelTitle, labelContent, buttonTitle } = initValues;
     const [title, setTitle] = useState(initTitle);
     const [content, setContent] = useState(initContent);
 
@@ -24,7 +24,7 @@ const NoteForm = ({ onSubmit, initValues }) => {
                 numberOfLines={5}                
             />
             <Button 
-                title='Add Note'
+                title={buttonTitle}
                 onPress={() => onSubmit(title, content)}
             />
         </View>
