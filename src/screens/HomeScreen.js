@@ -10,6 +10,14 @@ const HomeScreen = ({ navigation }) => {
     
     useEffect(() => {
         getNotePosts();
+
+        const listener = navigation.addListener('didFocus', () => {
+            getNotePosts();
+        });
+//if we really remove our screen then return will clean
+        return () => {
+            listener.remove();
+        }
     }, []);
 
     return(
