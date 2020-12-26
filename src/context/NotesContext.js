@@ -1,35 +1,34 @@
 import createDataContext from './createDataContext';
+import jsonServer from '../api/jsonServer';
 
 const noteReducer = (state, action) => {
     switch (action.type) {
         case 'delete_note':
             return state.filter((notePost) => notePost.id !== action.payload);
-        case 'add_note':
-            return [
-                ...state,
-                {
-                     title: action.payload.title,
-                     content: action.payload.content,
-                     id: Math.floor(Math.random()*999999)
-                }
-            ];
         case 'edit_note':
             return state.map((note) => {
                 return note.id === action.payload.id 
                     ? action.payload
                     : note;
             });
+        case 'get_notes':
+            return action.payload;
         default:
             return state;
     }
 };
 
+const getNotePosts = dispatch => {
+    return async () => {
+        const response = await jsonServer.get('/noteposts');
+        dispatch({ type: 'get_notes', payload: response.data })
+    }
+}
+
 const addNotePost = (dispatch) => {
-    return (title, content, callback) => {
-        dispatch({ 
-            type: 'add_note', 
-            payload: { title, content } 
-        });
+    return async (title, content, callback) => {
+        await jsonServer.post('/noteposts', { title, content });
+
         if(callback){
             callback();
         }
@@ -37,7 +36,9 @@ const addNotePost = (dispatch) => {
 };
 
 const editNotePost = dispatch => {
-    return (title, content, id, callback) => {
+    return async (title, content, id, callback) => {
+        await jsonServer.put(`/noteposts/${id}`, { title, content });
+
         dispatch({
             type: 'edit_note',
             payload: { id, title, content }
@@ -49,15 +50,17 @@ const editNotePost = dispatch => {
 };
 
 const deleteNotePost = (dispatch) => {
-    return (id) => {
+    return async (id) => {
+        await jsonServer.delete(`/noteposts/${id}`);
+
         dispatch({ type: 'delete_note', payload: id });
     };
 };
 
 export const { Context, Provider } = createDataContext(
     noteReducer,
-    { addNotePost, deleteNotePost, editNotePost },
-    [{ title: 'test', content: 'test content', id: 1}]
+    { addNotePost, deleteNotePost, editNotePost, getNotePosts },
+    []
 );
 
 // for API requests
