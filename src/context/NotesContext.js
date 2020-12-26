@@ -1,4 +1,5 @@
 import createDataContext from './createDataContext';
+import jsonServer from '../api/jsonServer';
 
 const noteReducer = (state, action) => {
     switch (action.type) {
@@ -19,10 +20,19 @@ const noteReducer = (state, action) => {
                     ? action.payload
                     : note;
             });
+        case 'get_notes':
+            return action.payload;
         default:
             return state;
     }
 };
+
+const getNotePosts = dispatch => {
+    return async () => {
+        const response = await jsonServer.get('/noteposts');
+        dispatch({ type: 'get_notes', payload: response.data })
+    }
+}
 
 const addNotePost = (dispatch) => {
     return (title, content, callback) => {
@@ -56,8 +66,8 @@ const deleteNotePost = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
     noteReducer,
-    { addNotePost, deleteNotePost, editNotePost },
-    [{ title: 'test', content: 'test content', id: 1}]
+    { addNotePost, deleteNotePost, editNotePost, getNotePosts },
+    []
 );
 
 // for API requests

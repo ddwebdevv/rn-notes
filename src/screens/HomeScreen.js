@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { Context as NotesContext } from '../context/NotesContext';
 // import { Context as ImageContext } from '../context/ImageContext';
@@ -6,7 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 const HomeScreen = ({ navigation }) => {
-    const { state, deleteNotePost} = useContext(NotesContext);
+    const { state, deleteNotePost, getNotePosts } = useContext(NotesContext);
+    
+    useEffect(() => {
+        getNotePosts();
+    }, []);
+
     return(
         <View>
             <FlatList
