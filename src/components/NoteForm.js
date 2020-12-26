@@ -1,34 +1,48 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 
-const NoteForm = ({ onSubmit, initValues }) => {
-    const { initTitle, initContent, labelTitle, labelContent, buttonTitle } = initValues;
-    const [title, setTitle] = useState(initTitle);
-    const [content, setContent] = useState(initContent);
+class NoteForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: '',
+            content: '' 
+        }
+    }
 
-    return(
-        <View>
-            <Text style={styles.label}>{labelTitle}</Text>
-            <TextInput  
-                value={title}
-                onChangeText={(text) => setTitle(text)}
-                style={styles.input}
-            />
-            <Text style={styles.label}>{labelContent}</Text>
-            <TextInput
-                value={content}
-                onChangeText={(text) => setContent(text)}
-                style={styles.input}
-                multiline
-                textAlignVertical={'top'}
-                numberOfLines={5}                
-            />
-            <Button 
-                title={buttonTitle}
-                onPress={() => onSubmit(title, content)}
-            />
-        </View>
-    );
+    componentDidMount() {
+        const { initTitle, initContent } = this.props.initValues;
+        this.setState({ title: initTitle });
+        this.setState({ content: initContent });
+    }
+
+    render() {
+        const { labelTitle, labelContent, buttonTitle } = this.props.initValues;
+        const { title, content } = this.state;
+        return(
+            <View>
+                <Text style={styles.label}>{labelTitle}</Text>
+                <TextInput  
+                    value={title}
+                    onChangeText={(text) => this.setState({ title: text })}
+                    style={styles.input}
+                />
+                <Text style={styles.label}>{labelContent}</Text>
+                <TextInput
+                    value={content}
+                    onChangeText={(text) => this.setState({ content: text })}
+                    style={styles.input}
+                    multiline
+                    textAlignVertical={'top'}
+                    numberOfLines={5}                
+                />
+                <Button 
+                    title={buttonTitle}
+                    onPress={() => this.props.onSubmit(title, content)}
+                />
+            </View>
+        );
+    }
 };
 
 NoteForm.defaultProps = {     
@@ -36,7 +50,8 @@ NoteForm.defaultProps = {
         initTitle: '',
         initContent: '',
         labelTitle: 'Enter Title:',
-        labelContent: 'Enter Content:'
+        labelContent: 'Enter Content:',
+        buttonTitle: 'Add Note'
     }
 };
 

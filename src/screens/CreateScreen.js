@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
-import { Context } from '../context/NotesContext';
 import NoteForm from '../components/NoteForm';
+import { addNotePost } from '../redux/ActionCreators';
 
-const CreateScreen = ({ navigation }) => {
-    
-    const { addNotePost } = useContext(Context);
+const mapDispatchToProps = {
+    addNotePost: (title, content, callback) => addNotePost(title, content, callback)
+}
+
+const CreateScreen = (props) => {
+    const { navigation, addNotePost } = props;
 
     return <NoteForm
         onSubmit={(title, content) => {
@@ -18,4 +22,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default CreateScreen;
+export default connect(null, mapDispatchToProps)(CreateScreen);

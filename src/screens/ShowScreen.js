@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Context } from '../context/NotesContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { connect } from 'react-redux';
 
-const ShowScreen = ({ navigation }) => {
-    // navigation.getParam('id');
-    const { state } = useContext(Context);
+const mapStateToProps = state => {
+    return { notes: state.notes };
+};
 
-    const notePost = state.find((notePost) => notePost.id === navigation.getParam('id'));
+const ShowScreen = ({ navigation, notes }) => {
+
+    const note = notes.find((note) => note.id === navigation.getParam('id'));
     return(
         <View>
-            <Text style={styles.title}>{notePost.title}</Text>
-            <Text style={styles.content}>{notePost.content}</Text>
+            <Text style={styles.title}>{note.title}</Text>
+            <Text style={styles.content}>{note.content}</Text>
         </View>
     );
 };
@@ -42,5 +44,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ShowScreen;
+export default connect(mapStateToProps)(ShowScreen);
 

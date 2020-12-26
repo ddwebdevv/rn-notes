@@ -1,16 +1,23 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
-import { Context as NotesContext } from '../context/NotesContext';
-// import { Context as ImageContext } from '../context/ImageContext';
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import { deleteNotePost } from '../redux/ActionCreators';
 
+const mapStateToProps = state => {
+    return { notes: state.notes };
+};
 
-const HomeScreen = ({ navigation }) => {
-    const { state, deleteNotePost} = useContext(NotesContext);
+const mapDispatchToProps = {
+    deleteNotePost: (id) => deleteNotePost(id)
+}
+
+const HomeScreen = ({ navigation, notes, deleteNotePost }) => {
+    
     return(
         <View>
             <FlatList
-                data={state}
+                data={notes}
                 keyExtractor={(note) => note.id.toString()}
                 renderItem={({ item }) => {
                     return (
@@ -55,5 +62,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default HomeScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
